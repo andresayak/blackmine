@@ -8,9 +8,17 @@ use Zend\Session\Container;
 use Zend\Http\Request as HttpRequest;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ModelInterface;
+use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 
 class Module
 {
+    public function init(ModuleManager $moduleManager)
+    {
+        $events = $moduleManager->getEventManager();
+        $events->attach(ModuleEvent::EVENT_MERGE_CONFIG, array($this, 'onMergeConfig'));
+    }
+    
     public function onBootstrap(MvcEvent $e)
     {
         $config = $e->getApplication()->getServiceManager()->get('config');
@@ -63,6 +71,7 @@ class Module
                 }
             }
         }, 100);
+        
         $eventManager->attach('dispatch.error', function($event){
             $exception = $event->getResult()->exception;
             if ($exception) {
@@ -73,7 +82,30 @@ class Module
             $viewModel = $event->getViewModel();
             $viewModel->setTemplate('layout/error');
         });
-        //$eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
+    }
+    
+    public function onMergeConfig(ModuleEvent $e)
+    {
+        $configListener = $e->getConfigListener();
+        $config = $configListener->getMergedConfig(false);
+
+        $data = array(
+            'themeName' =>  $config['view_manager']['defaultThemeName']
+        );
+        $f = function(&$config) use (&$f, $data){
+            foreach($config AS $key=>$item){
+                if(is_array($item)){
+                    $config[$key] = $f($item);
+                }elseif(is_string($item)){
+                    foreach($data AS $index=>$value){
+                        $config[$key] = str_replace('{'.$index.'}', $value, $item);
+                    }
+                }
+            }
+            return $config;
+        };
+        $f($config);
+        $configListener->setMergedConfig($config);
     }
     
     public function isJson($request){
@@ -203,12 +235,7 @@ class Module
     
     public function getConfig()
     {
-        $config = include __DIR__ . '/config/module.config.php';
-        $config['service_manager']['factories'] = array_merge($config['service_manager']['factories'],
-            array(
-            )
-        );
-        return $config;
+        return include __DIR__ . '/config/module.config.php';
     }
 
     public function getAutoloaderConfig()

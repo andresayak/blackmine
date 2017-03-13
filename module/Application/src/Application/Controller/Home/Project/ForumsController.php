@@ -11,7 +11,7 @@ use Application\Form;
 use Zend\Paginator\Paginator;
 use Application\Form\InputFilter;
 
-class IndexController extends AbstractController
+class ForumsController extends AbstractController
 {
     public function init(){
         $this->layout('layout/admin');

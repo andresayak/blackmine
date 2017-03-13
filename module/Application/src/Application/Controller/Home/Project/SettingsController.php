@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Controller\Admin;
+namespace Application\Controller\Home\Project;
 
 use Application\Controller\AbstractController;
 use Zend\View\Model\JsonModel;
@@ -13,18 +13,21 @@ use Application\Form\InputFilter;
 
 class SettingsController extends AbstractController
 {
-    public function init()
-    {
+    public function init(){
         $this->layout('layout/admin');
     }
     
     public function indexAction()
     {
+        $project_id = $this->params()->fromRoute('project_id');
+        $table = $this->getServiceLocator()->get('Project\Table');
+        $projectRow = $table->fetchBy('id', $project_id);
+        if(!$projectRow){
+            return $this->redirect()->toRoute('projects');
+        }
         $this->init();
-    }
-    
-    public function displayAction()
-    {
-        $this->init();
+        return array(
+            'projectRow'   =>$projectRow
+        );
     }
 }

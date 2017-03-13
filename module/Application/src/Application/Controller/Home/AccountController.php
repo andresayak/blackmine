@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Controller\Admin;
+namespace Application\Controller\Home;
 
 use Application\Controller\AbstractController;
 use Zend\View\Model\JsonModel;
@@ -11,16 +11,14 @@ use Application\Form;
 use Zend\Paginator\Paginator;
 use Application\Form\InputFilter;
 
-class ReportController extends AbstractController
+class AccountController extends AbstractController
 {
-    
+    public function init()
+    {
+        $this->layout('layout/admin');
+    }
     public function indexAction()
     {
-        $this->layout('layout/report');
-    }
-    
-    public function indexFrAction()
-    {
-        $this->layout('layout/report');
+        $this->init();
     }
 }

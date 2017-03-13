@@ -11,7 +11,7 @@ use Application\Form;
 use Zend\Paginator\Paginator;
 use Application\Form\InputFilter;
 
-class IndexController extends AbstractController
+class TasksController extends AbstractController
 {
     public function init(){
         $this->layout('layout/admin');
@@ -27,6 +27,24 @@ class IndexController extends AbstractController
         }
         $this->init();
         return array(
+            'projectRow'   =>$projectRow
+        );
+    }
+    
+    public function addAction()
+    {
+        $project_id = $this->params()->fromRoute('project_id');
+        $table = $this->getServiceLocator()->get('Project\Table');
+        $projectRow = $table->fetchBy('id', $project_id);
+        if(!$projectRow){
+            return $this->redirect()->toRoute('projects');
+        }
+        
+        $this->init();
+        $form = new \Application\Form\Project\Task;
+        $form->init();
+        return array(
+            'form' =>  $form,
             'projectRow'   =>$projectRow
         );
     }

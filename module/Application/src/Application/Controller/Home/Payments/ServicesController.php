@@ -36,4 +36,14 @@ class ServicesController extends AbstractController
             'paginator' => $paginator
         );
     }
+    
+    public function addAction()
+    {
+        $this->init();
+        $form = new \Application\Form\Payment\Service;
+        $form->init();
+        return array(
+            'form' =>  $form,
+        );
+    }
 }

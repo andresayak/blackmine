@@ -1,0 +1,16 @@
+<?php
+
+return array(
+    'db' => array(
+        'dsn'            => 'mysql:dbname=blackmine;host=localhost',
+        'username' => '',
+        'password' => '',
+    ),
+    'view_manager' => array(
+        'display_not_found_reason' => true,
+        'display_exceptions'       => true,
+        'base_path' => '<--domain-->',
+    ),
+    'constants' =>array(
+    ),
+);

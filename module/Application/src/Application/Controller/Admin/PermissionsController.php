@@ -22,4 +22,14 @@ class PermissionsController extends AbstractController
     {
         $this->init();
     }
+    
+    public function addAction()
+    {
+        $this->init();
+        $form = new \Application\Form\Admin\Role;
+        $form->init();
+        return array(
+            'form' =>  $form,
+        );
+    }
 }
