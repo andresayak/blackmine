@@ -21,15 +21,98 @@ class PermissionsController extends AbstractController
     public function indexAction()
     {
         $this->init();
+        $tableGateway = $this->getServiceLocator()->get('User\Role\Table')->getTableGateway();
+        $adapter = new \Application\Paginator\Adapter\DbTableGateway($tableGateway, array(
+            'user_id'   =>  $this->getAuthUser()->id
+        ), 'id DESC');
+        $paginator = new Paginator($adapter);
+        $paginator->setCurrentPageNumber($this->params()->fromQuery('p', 1))
+            ->setItemCountPerPage(100);
+        
+        return array(
+            'paginator' => $paginator
+        );
     }
     
     public function addAction()
     {
+        $roleTable = $this->getTable('User\Role');
+        $copyRow = false;
+        if($copy_id = $this->params()->fromQuery('copy', false))
+            $copyRow = $roleTable->fetchBy('id', $copy_id);
+        
+        $user_id = $this->getAuthUser()->id;
         $this->init();
-        $form = new \Application\Form\Admin\Role;
+        if($copyRow){
+            $roleRow = clone $copyRow;
+        }else{
+            $roleRow = $roleTable->createRow();
+        }
+        $form = new Form\Admin\Role($this->getServiceLocator());
         $form->init();
+        $form->bind($copyRow);
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($roleRow->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $roleRow->setFromArray(array(
+                    'user_id'       =>  $user_id,
+                    'time_add'      =>  time(),
+                ));
+                $roleRow->save();
+                
+                $this->addMessage('Saved', 'success');
+                return $this->_redirect();
+            }
+        }
         return array(
-            'form' =>  $form,
+            'form'          =>  $form
         );
+    }
+    
+    public function editAction()
+    {
+        $user_id = $this->getAuthUser()->id;
+        $this->init();
+        if(!$roleRow = $this->getRow('User\Role')){
+            $this->addError('Not found');
+            return $this->_redirect();
+        }
+        
+        $form = new Form\Admin\Role($this->getServiceLocator());
+        $form->init();
+        $form->bind($roleRow);
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($roleRow->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $roleRow->setFromArray(array(
+                    'user_id'       =>  $user_id,
+                    'time_add'      =>  time(),
+                ));
+                $roleRow->save();
+                
+                $this->addMessage('Saved', 'success');
+                return $this->_redirect();
+            }
+        }
+        return array(
+            'form'          =>  $form
+        );
+    }
+    
+    public function removeAction()
+    {
+        $user_id = $this->getAuthUser()->id;
+        $this->init();
+        if(!$roleRow = $this->getRow('User\Role')){
+            $this->addError('Not found');
+            return $this->_redirect();
+        }
+        $roleRow->delete();
+        $this->addMessage('Saved', 'success');
+        return $this->_redirect();
     }
 }

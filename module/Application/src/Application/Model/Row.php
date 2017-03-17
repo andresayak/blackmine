@@ -9,8 +9,8 @@ use Zend\ServiceManager\ServiceManager;
 
 class Row implements HydratorAwareInterface
 {
-    protected $_data;
-    protected $_table;
+    protected $_data, $_sm;
+    protected $_table, $_hydrator, $_inputFilter;
     protected $_force_insert = false;
     protected $_modifiedFields = array();
     
@@ -18,7 +18,6 @@ class Row implements HydratorAwareInterface
     {
         return $this->_sm;
     }
-    
     
     public function setSm(ServiceManager $serviceManager) 
     {
@@ -30,6 +29,7 @@ class Row implements HydratorAwareInterface
     {
         return $this->_hydrator = $hydrator;
     }
+    
     public function getHydrator()
     {
         if($this->_hydrator === null){
@@ -123,14 +123,11 @@ class Row implements HydratorAwareInterface
 
     public function __set($col, $value)
     {
-        if (!in_array($col, $this->getTable()->getCols())) {
-            $this->$col = $value;
-            return;
-            //throw new \Exception("Specified column \"$col\" is not in the row [".get_class($this)."]");
-        }
-        
         $this->getTable()->filterCol($col, $value);
-        if($this->_data[$col] !== $value){
+        if(!isset($this->_data[$col])){
+            $this->_data[$col] = $value;
+        }
+        if(isset($this->_data[$col]) && $this->_data[$col] !== $value){
             if(in_array($col, $this->getTable()->getCols()) and !$this->isModified($col)){
                 $this->_modifiedFields[$col] = $this->_data[$col];
             }
@@ -168,7 +165,7 @@ class Row implements HydratorAwareInterface
     
     public function toArrayForSave()
     {
-        if ($this->isNotSave() or $this->_force_insert) {
+        if ($this->{$this->getTable()->getKey()} === null or $this->_force_insert) {
             $data = $this->toArray();
         }else{
             $data = array();
@@ -186,32 +183,9 @@ class Row implements HydratorAwareInterface
             }
         }
         foreach($data AS $col=>$value){
-            if(!in_array($col, $this->getTable()->getCols()) 
-                || in_array($col, $this->getTable()->getCacheCols())
-            ){
+            if(!in_array($col, $this->getTable()->getCols())){
                 unset($data[$col]);
             }
-        }
-        return $data;
-    }
-    public function toArrayForSync()
-    {
-        $data = array();
-        foreach($this->toArray() AS $col=>$value){
-            if($this->isModified($col)){
-                $data[$col] = $value;
-            }
-        }
-        foreach($data AS $col=>$value){
-            if($value === null 
-                || !in_array($col, $this->getTable()->getCols()) 
-                || !in_array($col, $this->getTable()->getCacheCols())
-            ){
-                unset($data[$col]);
-            }
-        }
-        if(count($data)){
-            //print_r($this->_modifiedFields);exit;
         }
         return $data;
     }
@@ -286,24 +260,6 @@ class Row implements HydratorAwareInterface
     protected function _preUpdate()
     {
         
-    }
-    
-    public function blockForUpdate()
-    {
-        if(!$this->{$this->getTable()->getKey()}){
-            throw new \Exception('Invalid primary key('.$this->getTable()->getKey().')');
-        }
-        if($this->getTable()->isBlockId($this->{$this->getTable()->getKey()})){
-            return $this;
-            throw new \Exception('Id already is blocked ('.$this->getTable()->getKey().'='.$this->{$this->getTable()->getKey()}.')');
-        }
-        $row = $this->getTable()->fetchByPKForUpdate($this->{$this->getTable()->getKey()});
-        if(!$row){
-            throw new \Exception('Blocked row not found');
-        }
-        $this->exchangeArray($row->toArray());
-        $this->getTable()->addBlockId($this->{$this->getTable()->getKey()});
-        return $this;
     }
     
     public function getCacheId()

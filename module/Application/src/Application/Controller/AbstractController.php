@@ -13,6 +13,7 @@ use Zend\Console\Request as ConsoleRequest;
 
 class AbstractController extends AbstractActionController
 {
+    
     public function isJson()
     {
         $request = $this->getRequest();

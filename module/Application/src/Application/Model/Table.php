@@ -27,7 +27,7 @@ class Table
     protected $_blocks_ids = array();
     protected $_cache_cols = array();
     protected $_filters = array();
-    protected $_cache_adapter, $_rowset;
+    protected $_cache_adapter, $_rowset, $_metadata;
     
     public function getRowset()
     {
@@ -53,6 +53,15 @@ class Table
                 
             }
         }
+    }
+    
+    public function getMetadata()
+    {
+        if($this->_metadata === null){
+            $metadata = new \Zend\Db\Metadata\Metadata($this->_tableGateway->getAdapter());
+            $this->_metadata = $metadata->getTable($this->_name);
+        }
+        return $this->_metadata;
     }
 
     public function getCounters()
@@ -95,7 +104,12 @@ class Table
     
     public function getCols()
     {
-        return $this->_cols;
+        $cols = array();
+        $columns = $this->getMetadata()->getColumns();
+        foreach($columns AS $column){
+            $cols[] = $column->getName();
+        }
+        return $cols;
     }
     
     public function getCacheCols()

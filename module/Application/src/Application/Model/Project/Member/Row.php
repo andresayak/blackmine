@@ -6,6 +6,8 @@ use Application\Model\Row as Prototype;
 
 class Row extends Prototype
 {
+    protected $_userRow;
+    
     public function getInputFilter()
     {
         if($this->_inputFilter === null){
@@ -79,5 +81,14 @@ class Row extends Prototype
             $this->_inputFilter = $inputFilter;
         }
         return $this->_inputFilter;
+    }
+    
+    public function getUserRow()
+    {
+        if($this->_userRow === null){
+            $this->_userRow = $this->getSm()->get('User\Table')
+                ->fetchBy('id', $this->user_id);
+        }
+        return $this->_userRow;
     }
 }

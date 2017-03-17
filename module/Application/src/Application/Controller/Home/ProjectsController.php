@@ -13,29 +13,9 @@ use Application\Form\InputFilter;
 
 class ProjectsController extends AbstractController
 {
-    public function init(){
+    public function init()
+    {
         $this->layout('layout/admin');
-    }
-    
-    public function getWhere($user_id, $userProject){
-        $where = new \Zend\Db\Sql\Where();
-        $items = array();
-        foreach($userProject AS $userProjectRow){
-            $items[] = $userProjectRow->project_id;
-        }
-        if(!count($items)){
-            return array(
-                'auth_id'   =>  $user_id
-            );
-        }else{
-            $where->addPredicates(
-                array(
-                    new \Zend\Db\Sql\Predicate\In('id', $items),
-                    'auth_id'   =>  $user_id
-                ), 'OR'
-            );
-        }
-        return $where;
     }
     
     public function indexAction()
@@ -44,8 +24,9 @@ class ProjectsController extends AbstractController
         $user_id = $this->getAuthUser()->id;
         $userProject = $this->getServiceLocator()->get('Project\Member\Table')
             ->fetchAllBy('user_id', $user_id);
-        $where = $this->getWhere($user_id, $userProject);
-        $tableGateway = $this->getServiceLocator()->get('Project\Table')->getTableGateway();
+        $projectTable = $this->getServiceLocator()->get('Project\Table');
+        $tableGateway = $projectTable->getTableGateway();
+        $where = $projectTable->getWhereByUser($user_id, $userProject);
         $adapter = new \Application\Paginator\Adapter\DbTableGateway($tableGateway, $where, 'id DESC');
         $paginator = new Paginator($adapter);
         $paginator->setCurrentPageNumber($this->params()->fromQuery('p', 1))
