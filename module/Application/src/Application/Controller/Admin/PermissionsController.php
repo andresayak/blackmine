@@ -50,7 +50,7 @@ class PermissionsController extends AbstractController
         }
         $form = new Form\Admin\Role($this->getServiceLocator());
         $form->init();
-        $form->bind($copyRow);
+        $form->bind($roleRow);
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($roleRow->getInputFilter());
