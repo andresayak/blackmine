@@ -1,0 +1,8 @@
+{
+    "name": "andresayak/blackmine",
+    "require": {
+        "php": ">=5.6",
+        "zendframework/zendframework": "2.5",
+        "zendframework/zendservice-recaptcha": "*"
+    }
+}

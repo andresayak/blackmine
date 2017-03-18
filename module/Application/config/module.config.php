@@ -124,6 +124,9 @@ return array(
             'Project\Table' => function($sm) {
                 return new Application\Model\Project\Table($sm);
             },
+            'Project\Task\Table' => function($sm) {
+                return new Application\Model\Project\Task\Table($sm);
+            },
             'Project\Member\Table' => function($sm) {
                 return new Application\Model\Project\Member\Table($sm);
             },
@@ -132,12 +135,19 @@ return array(
                 return $table;
             },
             'User\Table' => function($sm) {
-                $table = new Application\Model\User\Table($sm);
-                return $table;
+                return new Application\Model\User\Table($sm);
+            },
+            'User\Role\Table' => function($sm) {
+                return new Application\Model\User\Role\Table($sm);
+            },
+            'User\Parent\Table' => function($sm) {
+                return new Application\Model\User\Parents\Table($sm);
+            },
+            'User\CustomField\Table' => function($sm) {
+                return new Application\Model\User\CustomField\Table($sm);
             },
             'Customer\Table' => function($sm) {
-                $table = new Application\Model\Customer\Table($sm);
-                return $table;
+                return new Application\Model\Customer\Table($sm);
             },
             'Order\Table' => function($sm) {
                 $table = new Application\Model\Order\Table($sm);
@@ -247,6 +257,9 @@ return array(
         'factories' => array(
             'themePath' =>  function($sm){
                 return new Application\View\Helper\ThemePath($sm->getServiceLocator());
+            },
+            'cms' =>  function($sm){
+                return new Application\View\Helper\Cms($sm->getServiceLocator());
             },
             'takeServer' => function($sm) {
                 return new Application\View\Helper\TakeServer($sm->getServiceLocator()->get('TakeServer\Service'));

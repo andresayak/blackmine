@@ -1,0 +1,6 @@
+/config/autoload/local.php
+/vendor/
+/data/logs/*
+/data/tmp/*
+/data/uploads/*
+/public/files/*

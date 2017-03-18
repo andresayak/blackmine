@@ -199,7 +199,20 @@ return array(
                 ),
             ),
         ),
-        
+        'user-view' => array(
+            'type' => 'Segment',
+            'options' => array(
+                'route' => '/home/user[/:id]',
+                'constraints' => array(
+                    'id' => '[0-9]+',
+                ),
+                'defaults' => array(
+                    '__NAMESPACE__' => 'Application\Controller\Home',
+                    'controller' => 'user',
+                    'action' => 'view',
+                ),
+            ),
+        ),
         'report-view' => array(
             'type' => 'Segment',
             'options' => array(

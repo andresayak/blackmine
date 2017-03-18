@@ -1,6 +1,84 @@
 <?php
 
 return array(
+    'permissionLabels'    =>  array(
+        'project'   =>  array(
+            'label' =>  'Project',
+            'childs'=>array(
+                array(
+                    'label' =>  'Create project',  
+                    'resource'  =>  'application-home/project-add'
+                ),
+                array(
+                    'label' =>  'Edit project', 
+                    'resource'  =>  'application-home/project-edit'
+                ),
+                array(
+                    'label' =>  'Close project',  
+                    'resource'  =>  'application-home/project-remove'
+                ),
+                array(
+                    'label' =>  'Manage members', 
+                    'resource'  =>  'application-home/project-settings/members'
+                ),
+            )
+        ),
+        'forums'   =>  array(
+            'label' =>  'Forums',
+            'childs'=>array(
+            )
+        ),
+        'calendar'   =>  array(
+            'label' =>  'Calendar',
+            'childs'=>array(
+            )
+        ),
+        'documents'   =>  array(
+            'label' =>  'Documents',
+            'childs'=>array(
+            )
+        ),
+        'files'   =>  array(
+            'label' =>  'Files',
+            'childs'=>array(
+            )
+        ),
+        'gantt'   =>  array(
+            'label' =>  'Gantt',
+            'childs'=>array(
+            )
+        ),
+        'tasks'   =>  array(
+            'label' =>  'Tasks',
+            'childs'=>array(
+            )
+        ),
+        'news'   =>  array(
+            'label' =>  'News',
+            'childs'=>array(
+            )
+        ),
+        'time'   =>  array(
+            'label' =>  'Time tracking',
+            'childs'=>array(
+            )
+        ),
+        'customers'   =>  array(
+            'label' =>  'Customers',
+            'childs'=>array(
+            )
+        ),
+        'payments'   =>  array(
+            'label' =>  'Payments',
+            'childs'=>array(
+            )
+        ),
+        'reports'   =>  array(
+            'label' =>  'Reports',
+            'childs'=>array(
+            )
+        ),
+    ),
     'roles' => array(
         array(
             'code' => 'guest',
@@ -39,13 +117,30 @@ return array(
                     'resource' => 'application-admin/index',
                 ),
                 array(
-                    'resource'  =>  'application-admin/users'
+                    'resource'  =>  'application-admin/users',
+                    'children' => array(
+                        array(
+                            'resource'  =>  'application-admin/users-add'
+                        ),
+                        array(
+                            'resource'  =>  'application-admin/users-edit'
+                        ),
+                        array(
+                            'resource'  =>  'application-admin/users-remove'
+                        ),
+                    )
                 ),
                 array(
                     'resource'  =>  'application-admin/permissions',
                     'children' => array(
                         array(
                             'resource'  =>  'application-admin/permissions-add'
+                        ),
+                        array(
+                            'resource'  =>  'application-admin/permissions-edit'
+                        ),
+                        array(
+                            'resource'  =>  'application-admin/permissions-remove'
                         ),
                     )
                 ),
@@ -119,7 +214,18 @@ return array(
                     'resource'  =>  'application-home/project/index',
                     'children' => array(
                         array(
-                            'resource'  =>  'application-home/project/tasks'
+                            'resource'  =>  'application-home/project/tasks',
+                            'children' => array(
+                                array(
+                                    'resource'  =>  'application-home/project/tasks-add',
+                                ),
+                                array(
+                                    'resource'  =>  'application-home/project/tasks-update',
+                                ),
+                                array(
+                                    'resource'  =>  'application-home/project/tasks-remove',
+                                )
+                            )
                         ),
                         array(
                             'resource'  =>  'application-home/project/news'

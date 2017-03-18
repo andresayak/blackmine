@@ -1,6 +1,8 @@
 <?php
 return array(
     'view_manager' => array(
+        'sitename'  =>  'Black_Mine',
+        'public_email'  =>  '{email}',
         'defaultThemeName' =>  'default',
         'useThemeName'  =>  '{themeName}',
         'display_not_found_reason' => false,
