@@ -1,0 +1,151 @@
+<?php $form->setAttribute('class', 'form')->prepare() ?>
+<script>
+    var customers = <?php echo json_encode($customerRowset->toArray())?>;
+    $(document).ready(function(){
+        $('[name="customer_id"]').change(function(){
+            var id = $(this).val();
+            var customer = false;
+            for(var i in customers){
+                if(parseInt(customers[i].id) == parseInt(id)){
+                    customer = customers[i];
+                }
+            }
+            console.log('customer', customer);
+            if(customer){
+                $('[name="customer_name"]').val(customer.name);
+                $('[name="customer_email"]').val(customer.email);
+                $('[name="customer_skype"]').val(customer.skype);
+                $('[name="customer_phone"]').val(customer.phone);
+            }
+        });
+    });
+</script>
+<?php echo $this->form()->openTag($form) ?>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group<?php if (count($form->get('customer_id')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="customer_id">Клієнт:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('customer_id')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('customer_id'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('customer_name')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="customer_name">ПІБ: <font color="red">*</font></label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('customer_name')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('customer_name'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('customer_email')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="customer_email">Email:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('customer_email')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('customer_email'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('customer_phone')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="customer_phone">Номер телефону: <font color="red">*</font></label>
+            <div class="controls">
+                <div class="input-group">
+                    <div class="input-group-addon">+380</div>
+                    <?php echo $this->formElement($form->get('customer_phone')->setAttribute('class', 'form-control')) ?>
+                </div>
+                <?php echo $this->formElementErrors($form->get('customer_phone'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('customer_skype')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="customer_skype">Skype:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('customer_skype')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('customer_skype'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+
+        <div class="form-group<?php if (count($form->get('price_work')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="price_work">Вартість робіт:</label>
+            <div class="controls">
+                <div class="input-group">
+                    <?php echo $this->formElement($form->get('price_work')->setAttribute('class', 'form-control')) ?>
+                    <div class="input-group-addon">грн.</div>
+                </div>
+                <?php echo $this->formElementErrors($form->get('price_work'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('price_detail')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="price_detail">Вартість деталей:</label>
+            <div class="controls">
+                <div class="input-group">
+                    <?php echo $this->formElement($form->get('price_detail')->setAttribute('class', 'form-control')) ?>
+                    <div class="input-group-addon">грн.</div>
+                </div>
+                <?php echo $this->formElementErrors($form->get('customer_skype'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group<?php if (count($form->get('category_id')->getMessages())): ?> has-error<?php endif ?>">
+            <div class="controls">
+                <div class='row'>
+                    <div class='col-sm-4'>
+                        <label class="control-label" for="category_id">Тип товару</label>
+                        <?php echo $this->formElement($form->get('category_id')->setAttribute('class', 'form-control')) ?>
+                    </div>
+                    <div class='col-sm-8'>
+                        <label class="control-label" for="category_id">Марка, модель:</label>
+                        <?php echo $this->formElement($form->get('product_title')->setAttribute('class', 'form-control')) ?>
+                    </div>
+                </div>
+                <?php echo $this->formElementErrors($form->get('category_id'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('product_serialnumber')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="product_serialnumber">Серійний номер:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('product_serialnumber')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('product_serialnumber'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('product_view')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="product_view">Зовнішній вигляд:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('product_view')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('product_view'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('problem')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="problem">Опис проблеми:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('problem')->setAttribute('class', 'form-control')->setAttribute('rows', '5')) ?>
+                <?php echo $this->formElementErrors($form->get('problem'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('product_options')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="product_options">Комплектація:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('product_options')->setAttribute('class', 'form-control')->setAttribute('rows', '5')) ?>
+                <?php echo $this->formElementErrors($form->get('product_options'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('user_id')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="user_id">Майстер:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('user_id')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('user_id'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('work_result')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="work_result">Виконана робота:</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('work_result')->setAttribute('class', 'form-control')->setAttribute('rows', '5')) ?>
+                <?php echo $this->formElementErrors($form->get('work_result'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="controls">
+        <button class="btn btn-lg btn-primary">Зберегти</button>
+    </div>
+</div>
+<?php echo $this->form()->closeTag()?>

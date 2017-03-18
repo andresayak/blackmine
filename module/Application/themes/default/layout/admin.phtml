@@ -1,0 +1,115 @@
+<?php echo $this->doctype(); ?>
+<?php  $children = $this->viewModel()->getCurrent()->getChildren();
+$child = $children[0]; ?>
+<?php $hideNavMenu = (isset($child->hideNavMenu))?$child->hideNavMenu:true?>
+<html dir='ltr' lang='en'>
+    <head>
+        <?php echo $this->headTitle('Black_Mine')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <meta charset="utf-8" />
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->themePath('/css/font-awesome.min.css')?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->themePath('/css/bootstrap.min.css')?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->themePath('/css/admin.css')?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->themePath('/css/jquery-ui.css')?>">
+        <script type="text/javascript" src="<?php echo $this->themePath('/js/jquery-1.10.2.js')?>"></script>
+        <script type="text/javascript" src="<?php echo $this->themePath('/js/bootstrap.min.js')?>"></script>
+        <script type="text/javascript" src="<?php echo $this->themePath('/js/jquery.pGenerator.js')?>"></script>
+        <script type="text/javascript" src="<?php echo $this->themePath('/js/jquery-ui.js')?>"></script>
+        <script type="text/javascript" src="<?php echo $this->themePath('/js/admin.js')?>"></script>
+        <base href="<?php echo $this->basePath('/')?>"/>
+        <link href="<?php echo $this->themePath('/favicon.png') ?>" rel="shortcut icon" type="image/png"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-btn-container navbar-right">
+                    <div class="dropdown">
+                        <a href="/home/profile" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo $this->url('account')?>">My account</a></li>
+                            <li><a href="<?php echo $this->url('account', array('controller'=>'tasks'))?>">My tasks</a></li>
+                            <li><a href="<?php echo $this->url('account', array('controller'=>'password'))?>">Change password</a></li>
+                            <li><a href="/auth/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarMenu" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Black_Mine</a>
+                    <div class="project-box">
+                        <label>Project</label>
+                        <span class="project-box-select dropdown-toggle" data-toggle="dropdown">
+                            <?php if(isset($child->projectRow)):?> <?php echo $child->projectRow->title; else:?>Recent projects <?php endif?>
+                            <i class="fa fa-angle-down"></i></span>
+                        <ul class="dropdown-menu">
+                            <?php foreach($this->projects()->getItems() AS $projectRow):?>
+                            <li<?php if(isset($child->projectRow) && $child->projectRow->id == $projectRow->id):?> class="active"<?php endif?>>
+                                <a href="<?php echo $this->url('project-view', array('project_id'=>$projectRow->id))?>"><?php echo $this->escapeHtml($projectRow->title)?></a>
+                            </li>
+                            <?php endforeach?>
+			</ul>
+                    </div>
+                </div>
+                <div id="navbarMenu" class="collapse navbar-collapse">
+                    <form class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                            <select class="form-control">
+                                <option value=""> - - - </option>
+                                <?php foreach($this->projects()->getItems() AS $projectRow):?>
+                                <option <?php if(isset($child->projectRow) && $child->projectRow->id == $projectRow->id):?> selected="selected"<?php endif?> value="<?php echo $projectRow->id?>"><?php echo $this->escapeHtml($projectRow->title)?></option>
+                                <?php endforeach?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </form>
+                    <?php echo ($this->navigation('menu\main')->menu()
+                        ->setUlClass('nav navbar-nav navbar-right')
+                        ->setMinDepth(0)
+                        ->setMaxDepth(1)
+                        ->setPartial('menu.phtml')); ?>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="page-wrap layer-admin collapse in">
+            <div class="container">
+                <?php if(isset($child->projectRow)):?>
+                    <h3 class="page-wrap-title"><?php echo $this->escapeHtml($child->projectRow->title)?></h3>
+                <?php endif?>
+                <?php $menu = ($this->navigation('menu\leftpanel')->menu()
+                    ->setUlClass('nav')
+                    ->setMinDepth(0)
+                    ->setMaxDepth(2)
+                    ->setPartial('leftmenu.phtml')->render()); ?>
+                <div class="inner<?php if(!$menu):?> no-left-panel<?php endif?>">
+                    <?php if($menu):?>
+                    <div class="left-panel">
+                        <?php echo $menu?>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".layer-admin" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <?php endif?>
+                    <div class="right-panel">
+                        <div class="inner">
+                            <?php echo $this->flashMessages()?>
+                            <?php echo $this->content ?>
+                            <div class="footer-info">
+                                Powered by <a href="http://blackmine.softberry.eu">Black_Mine</a> &copy;2017 Andrii Saiak
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

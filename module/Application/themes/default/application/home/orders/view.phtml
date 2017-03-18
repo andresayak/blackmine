@@ -1,0 +1,230 @@
+<?php $this->headTitle($title = 'Замовлення №'.$orderRow->id) ?>
+<div class="container">
+    <div class="page-header">
+        <div class="pull-right">
+            <?php if($this->acl('application-home/orders-print')):?>
+            <a target="_blank" href="<?php echo $this->url('order', array('action'=>'print'))?>?id=<?php echo $orderRow->id?>" class="btn btn-info"><i class="fa fa-print"></i></a>
+            <?php endif?>
+                <?php if($this->acl('application-home/orders-edit')):?>
+            <a href="<?php echo $this->url('order', array('action'=>'edit'))?>?id=<?php echo $orderRow->id?>" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
+            <?php endif?>
+            <?php if($this->acl('application-home/orders-remove')):?>
+            <a href="<?php echo $this->url('order', array('action'=>'remove'))?>?id=<?php echo $orderRow->id?>" class="btn btn-danger" onclick="return confirm('Видалити?');"><i class="fa fa-trash"></i></a>
+            <?php endif?>
+        </div>
+        <h4><?php echo $this->escapeHtml($title)?></h4>
+        <p>Статус:
+            <?php if ($orderRow->getStatusRow()->is_default == 'yes'): ?>
+                <span class="label label-warning"><?php echo $orderRow->getStatusRow()->name?></span>
+            <?php elseif ($orderRow->getStatusRow()->is_close == 'yes'): ?>
+                <span class="label label-default"><?php echo $orderRow->getStatusRow()->name?></span>
+            <?php else: ?>
+                <span class="label label-success"><?php echo $orderRow->getStatusRow()->name?></span>
+            <?php endif ?>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table table-hover">
+                <tr>
+                    <th>ПІБ:</th>
+                    <td><?php echo $orderRow->customer_name?></td>
+                </tr>
+                <?php if($this->auth()->getUserRow()->role!='member'):?>
+                <tr>
+                    <th>Email:</th>
+                    <td><?php echo $orderRow->customer_name?></td>
+                </tr>
+                <tr>
+                    <th>Номер телефону:</th>
+                    <td>+380 <?php echo $orderRow->customer_phone?></td>
+                </tr>
+                <tr>
+                    <th>Skype:</th>
+                    <td><?php echo $orderRow->customer_skype?></td>
+                </tr>
+                <?php endif?>
+                <tr>
+                    <th>Дата створення:</th>
+                    <td>
+                        <span data-time="<?php echo $orderRow->time_add?>" data-format="d/m/Y">
+                            <?php echo date('H:i d/m/Y', $orderRow->time_add)?>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Дата обновлення:</th>
+                    <td>
+                        <?php if($orderRow->time_update):?>
+                        <span data-time="<?php echo $orderRow->time_update?>" data-format="d/m/Y">
+                            <?php echo date('H:i d/m/Y', $orderRow->time_update)?>
+                        </span>
+                        <?php else:?>
+                        - - 
+                        <?php endif?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Дата виконання:</th>
+                    <td>
+                        <?php if($orderRow->time_end):?>
+                        <span data-time="<?php echo $orderRow->time_end?>" data-format="d/m/Y">
+                            <?php echo date('H:i d/m/Y', $orderRow->time_end)?>
+                        </span>
+                        <?php else:?>
+                        - - 
+                        <?php endif?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Майстер:</th>
+                    <td>
+                        <?php if($orderRow->getUserRow()):?>
+                        <?php echo $orderRow->getUserRow()->name?>
+                        <?php else:?>
+                        - - 
+                        <?php endif?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Менеджер:</th>
+                    <td>
+                        <?php if($orderRow->getAcceptorRow()):?>
+                        <?php echo $orderRow->getAcceptorRow()->name?>
+                        <?php else:?>
+                        - - 
+                        <?php endif?>
+                    </td>
+                </tr>
+                <?php if($this->auth()->getUserRow()->role!='member'):?>
+                <tr class="success">
+                    <th>Вартість робіт:</th>
+                    <td><?php echo $orderRow->price_work?> грн.</td>
+                </tr>
+                <tr class="success">
+                    <th>Вартість деталей:</th>
+                    <td><?php echo $orderRow->price_detail?> грн.</td>
+                </tr>
+                <?php endif?>
+            </table>
+            <legend>Загальна вартість: 
+                <span id="costSum">
+                    <?php if($this->auth()->getUserRow()->role!='member'):?>
+                    <?php echo $orderRow->price?>
+                    <?php else:?>
+                    <?php echo $orderRow->getUserPrice()?>
+                    <?php endif?>
+                </span> 
+                грн.
+            </legend>
+        </div>
+        <div class="col-sm-6">
+            <label>Тип товару, марка, модель:</label>
+            <pre><?php if($orderRow->getCategoryRow()):?><?php echo $orderRow->getCategoryRow()->title?><?php endif?><?php echo ($orderRow->product_title)?', '.$orderRow->product_title:''?>
+            </pre>
+            
+            <label>Серійний номер:</label>
+            <pre><?php echo nl2br($this->escapeHtml($orderRow->product_serialnumber))?></pre>
+            
+            <label>Зовнішній вигляд:</label>
+            <pre><?php echo nl2br($this->escapeHtml($orderRow->product_view))?></pre>
+            
+            <label>Опис проблеми:</label>
+            <pre><?php echo nl2br($this->escapeHtml($orderRow->problem))?></pre>
+            
+            <label>Комплектація:</label>
+            <pre><?php echo nl2br($this->escapeHtml($orderRow->product_options))?></pre>
+            <label>Виконана робота:</label>
+            <pre><?php echo nl2br($this->escapeHtml($orderRow->work_result))?></pre>
+        </div>
+    </div>
+    <?php if($this->auth()->getUserRow()->role!='member'):?>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3>Обновлення заказу</h3>
+                <?php $form->setAttribute('class', 'form')->prepare() ?>
+                <?php echo $this->form()->openTag($form) ?>
+                <div class="form-group<?php if (count($form->get('status_id')->getMessages())): ?> has-error<?php endif ?>">
+                    <label class="control-label" for="status_id">Статус</label>
+                    <div class="controls">
+                        <?php echo $this->formElement($form->get('status_id')->setAttribute('class', 'form-control')) ?>
+                        <?php echo $this->formElementErrors($form->get('status_id'), array('class' => 'text-danger')); ?>
+                    </div>
+                </div>
+                <div class="form-group<?php if (count($form->get('comment')->getMessages())): ?> has-error<?php endif ?>">
+                    <label class="control-label" for="comment">Коментар</label>
+                    <div class="controls">
+                        <?php echo $this->formElement($form->get('comment')->setAttribute('class', 'form-control')->setAttribute('rows', '5')) ?>
+                        <?php echo $this->formElementErrors($form->get('comment'), array('class' => 'text-danger')); ?>
+                    </div>
+                </div>
+                <?php if($this->auth()->getUserRow()->role!='member'):?>
+                <div class="form-group<?php if (count($form->get('user_id')->getMessages())): ?> has-error<?php endif ?>">
+                    <label class="control-label" for="user_id">Назначено на майста</label>
+                    <div class="controls">
+                        <?php echo $this->formElement($form->get('user_id')->setAttribute('class', 'form-control')) ?>
+                        <?php echo $this->formElementErrors($form->get('user_id'), array('class' => 'text-danger')); ?>
+                    </div>
+                </div>
+                <?php endif?>
+                <div class="form-group">
+                    <div class="controls">
+                        <button class="btn btn-lg btn-primary">Зберегти</button>
+                    </div>
+                </div>
+                <?php echo $this->form()->closeTag()?>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h2>Історія замовлення</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Дата / Статус</th>
+                        <th>Автор / Зміни</th>
+                        <th class="text-center">Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($orderRow->getHistoryRowset()->getItems() AS $historyRow):?>
+                    <tr>
+                        <td>
+                            <small data-time="<?php echo $historyRow->time_add?>" data-format="H:i d/m/Y"><?php echo date('H:i d/m/Y', $historyRow->time_add)?></span>
+                        </td>
+                        <td>
+                            <strong><?php echo $historyRow->getAuthRow()->name?></strong>
+                            <?php if($historyRow->comment):?>
+                            <pre><?php echo $historyRow->comment?></pre>
+                            <?php endif?>
+                            <?php if($historyRow->user_id):?>
+                            Назначений майстер: 
+                                <?php if($historyRow->getUserRow()):?>
+                                    <?php echo $historyRow->getUserRow()->name?>
+                                <?php else:?>
+                                <i>Remode user # <?php echo $historyRow->user_id?>
+                                <?php endif?>
+                            <?php endif?>
+                        </td>
+                        <td class="text-center">
+                            <?php if($historyRow->status_id):?>
+                            <div>
+                                <?php if ($historyRow->getStatusRow()->is_default == 'yes'): ?>
+                                    <span class="label label-warning"><?php echo $historyRow->getStatusRow()->name?></span>
+                                <?php elseif ($historyRow->getStatusRow()->is_close == 'yes'): ?>
+                                    <span class="label label-default"><?php echo $historyRow->getStatusRow()->name?></span>
+                                <?php else: ?>
+                                    <span class="label label-success"><?php echo $historyRow->getStatusRow()->name?></span>
+                                <?php endif ?>
+                            </div>
+                            <?php endif?>
+                        </td>
+                    </tr>
+                    <?php endforeach?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <?php endif?>
+    <?php echo $this->form()->closeTag()?>
+</div>

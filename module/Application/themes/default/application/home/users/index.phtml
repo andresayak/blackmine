@@ -1,0 +1,83 @@
+<?php $this->headTitle($title = 'Users')?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <a class="btn btn-success pull-right" href="<?php echo $this->url('user', array('action'=>'add'))?>"><i class="fa fa-plus"></i> Добавити користувача</a>
+            <h3><?php echo $title?> (<?php echo $this->paginator->getTotalItemCount()?>)</h3>
+        </div>
+        <table class="table">
+            <col width="100"/>
+            <thead>
+                <tr>
+                    <th>
+                        Номер користувача
+                    </th>
+                    <th>
+                        ПІБ
+                    </th>
+                    <th>
+                        Комісія
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Роль
+                    </th>
+                    <th>
+                        Блокування
+                    </th>
+                    <th width="100"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($paginator AS $item):?>
+                <tr>
+                    <td>
+                        <?php echo $item->id?>
+                    </td>
+                    <td>
+                        <?php echo $this->escapeHtml($item->getUserRow()->name)?>
+                    </td>
+                    <td>
+                        <?php echo (int)$item->commission?> %
+                    </td>
+                    <td>
+                        <?php echo $this->escapeHtml($item->email)?>
+                    </td>
+                    <td>
+                        <?php echo $item->getRoleName()?>
+                    </td>
+                    <td>
+                        <?php if($item->ban_status == 'on'): ?>
+                        <span class="label label-danger">Заблокований</span>
+                        <?php else:?>
+                        <span class="label label-success">Активний</span>
+                        <?php endif?>
+                    </td>
+                    <td class="text-right">
+                        <?php if($this->acl('application-home/users-edit')):?>
+                        <a href="<?php echo $this->url('user', array('action'=>'edit'))?>?id=<?php echo $item->id?>" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
+                        <?php endif?>
+                        <?php if($this->acl('application-home/users-remove')):?>
+                        <a href="<?php echo $this->url('user', array('action'=>'remove'))?>?id=<?php echo $item->id?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <?php endif?>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+        <?php echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'paginator.phtml', array('params'=>array(),'query'=>$form->getData(), 'route'=>'user')); ?>
+    </div>
+</div>

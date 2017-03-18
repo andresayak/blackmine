@@ -46,15 +46,17 @@ class Row extends Prototype
     public function getInputFilter()
     {
         if($this->_inputFilter === null){
-            $inputFilter = new Application\InputFilter\InputFilter;
+            $inputFilter = new \Application\InputFilter\InputFilter;
             $inputFilter->add(array(
                 'name' => 'email',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
+                    
                 ),
                 'validators' => array(
+                    array('name' => 'EmailAddress'),
                     new \Zend\Validator\Db\NoRecordExists(
                         array(
                             'adapter'   =>  $this->getTable()->getTableGateway()->getAdapter(),
@@ -73,16 +75,22 @@ class Row extends Prototype
                 'name' => 'name',
                 'required' => true,
             ));
-            
-            $inputFilter->add(array(
-                'name' => 'role',
-                'required' => true,
-            ));
 
             $inputFilter->add(array(
                 'name' => 'password',
-                'required' => false,
+                'required' => true,
             ));
+            
+            $inputFilter->add(array(
+                'name' => 'password_again',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name'  =>  'passwordAgain'
+                    )
+                )
+            ));
+            
             
             $inputFilter->add(array(
                 'name' => 'password_change',

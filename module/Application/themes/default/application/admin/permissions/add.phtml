@@ -1,0 +1,20 @@
+<?php $this->headTitle($title = 'New role') ?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li><a href="<?php echo $this->url('admin')?>">Administration</a></li>
+        <li><a href="<?php echo $this->url('admin', array('controller'=>'permissions'))?>">Role and permissions</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h3><?php echo $this->escapeHtml($title)?></h3>
+        </div>
+        <?php echo $this->render('_form.phtml')?>
+    </div>
+</div>

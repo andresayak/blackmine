@@ -1,0 +1,32 @@
+<?php $this->headTitle($title = 'Display') ?>
+<?php $this->headTitle('Settings') ?>
+<?php $this->headTitle('Administration') ?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li><a href="<?php echo $this->url('admin')?>">Administration</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h3><?php echo $title?></h3>
+        </div>
+        <div>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="<?php echo $this->url('admin')?>">Information</a></li>
+              <li><a href="<?php echo $this->url('admin')?>">Members</a></li>
+              <li><a href="<?php echo $this->url('admin', array('controller'=>'settings', 'action'=>'forum'))?>">Forums</a></li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active">
+              
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

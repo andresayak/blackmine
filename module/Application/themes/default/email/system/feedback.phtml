@@ -1,0 +1,9 @@
+Subject: <?php echo $this->escapeHtml($this->subject) ?><br/>
+<?php if($this->name):?>
+Name: <?php echo $this->escapeHtml($this->name) ?><br/>
+<?php endif?>
+<?php if($this->email):?>
+Email: <?php echo $this->escapeHtml($this->email) ?><br/>
+<?php endif?>
+Message: <?php echo nl2br($this->escapeHtml($this->message)) ?><br/>
+IP address: <?php echo ($this->ip_address) ?><br/>

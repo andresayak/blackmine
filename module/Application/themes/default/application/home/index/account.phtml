@@ -1,0 +1,44 @@
+<?php $this->headTitle($title = 'My account') ?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h3><?php echo $title?></h3>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php $form->setAttribute('class', 'form')->prepare() ?>
+                <?php echo $this->form()->openTag($form) ?>
+                <div class="form-group form-group-sm<?php if (count($form->get('name')->getMessages())): ?> has-error<?php endif ?>">
+                    <label class="control-label" for="name">Name <font color="red">*</font></label>
+                        <?php echo $this->formElement($form->get('name')->setAttribute('class', 'form-control')) ?>
+                        <?php echo $this->formElementErrors($form->get('name'), array('class' => 'text-danger')); ?>
+                </div>
+                <div class="form-group form-group-sm<?php if (count($form->get('email')->getMessages())): ?> has-error<?php endif ?>">
+                    <label class="control-label" for="email">Email <font color="red">*</font></label>
+                        <?php echo $this->formElement($form->get('email')->setAttribute('class', 'form-control')) ?>
+                        <?php echo $this->formElementErrors($form->get('email'), array('class' => 'text-danger')); ?>
+                </div>
+                <div class="form-group form-group-sm<?php if (count($form->get('phone')->getMessages())): ?> has-error<?php endif ?>">
+                    <label class="control-label" for="phone">Phone</label>
+                    <?php echo $this->formElement($form->get('phone')->setAttribute('class', 'form-control')) ?>
+                    <?php echo $this->formElementErrors($form->get('phone'), array('class' => 'text-danger')); ?>
+                </div>
+                <div class="form-group">
+                    <div class="controls">
+                        <button class="btn btn-sm btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php echo $this->form()->closeTag()?>
+    </div>
+</div>

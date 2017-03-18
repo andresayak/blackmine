@@ -1,0 +1,30 @@
+<?php $this->headTitle($title = 'New user') ?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li><a href="<?php echo $this->url('admin')?>">Administration</a></li>
+        <li><a href="<?php echo $this->url('admin', array('controller'=>'users'))?>">Users</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h3><?php echo $this->escapeHtml($title)?></h3>
+        </div>
+        <?php if(isset($erros['email']) && isset($erros['email']['recordFound'])):?>
+        <div class="alert alert-info">
+            <form action="<?php echo $this->url('admin', array('controller'=>'users', 'action'=>'add'))?>?mode=invite" method="post">
+                <input type="hidden" name="email" value="<?php echo $this->escapeHtml($form->get('email')->getValue())?>"/>
+                <p>User found in system, you can send him invite</p>
+                <button class="btn btn-info">Send</button>
+            </form>
+        </div>
+        <br/>
+        <?php endif?>
+        <?php echo $this->render('_form.phtml')?>
+    </div>
+</div>

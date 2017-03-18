@@ -1,0 +1,280 @@
+<h3>Month report (2/1/2017 - 2/28/2017)</h3>
+<p>Client's Account ID: XXXXXX</p>
+<p>Client's Email: test@gmail.com</p>
+<br/>
+<div class="well">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="text-center">
+                <h1>872</h1>
+                <p>CONNECTIONS (VIEWS) / <span class="diff-value down-value">-8.5%</span></p>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="text-center">
+                <h1>82.1K</h1>
+                <p>WEBSITE CLICKS / <span class="diff-value up-value">+5.1%</span></p>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="text-center">
+                <h1>4.2</h1>
+                <p>AVG. VIEWS PER USER / <span class="diff-value up-value">+5%</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-header">
+    <h4>Active users</h4>
+</div>
+<canvas id="activeChart" width="400" height="100"></canvas>
+<div class="page-header">
+    <h4>App connections (Views)</h4>
+</div>
+<canvas id="AppLaunchesChart" width="400" height="100"></canvas>
+<div class="page-header">
+    <h4>Events</h4>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th class="text-center">Amount</th>
+            <th class="text-center">Number of clients</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                App Installs
+            </td>
+            <td class="text-center">
+                2002 (<span class="diff-value up-value">+13%</span>)
+            </td>
+            <td class="text-center">
+                1000
+            </td>
+        </tr>
+        <tr>
+            <td>
+                App Views
+            </td>
+            <td class="text-center">
+                2002 (<span class="diff-value up-value">+3%</span>)
+            </td>
+            <td class="text-center">
+                1000
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Website clicks
+            </td>
+            <td class="text-center">
+                2002 (<span class="diff-value up-value">+23%</span>)
+            </td>
+            <td class="text-center">
+                1000
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Advertisements click
+            </td>
+            <td class="text-center">
+                22002 (<span class="diff-value down-value">-13%</span>)
+            </td>
+            <td class="text-center">
+                2000
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="page-header">
+            <h4>Age</h4>
+        </div>
+        <canvas id="ageChart" width="400" height="100"></canvas>
+    </div>
+    <div class="col-xs-6">
+        <div class="page-header">
+            <h4>Gender</h4>
+        </div>
+        <canvas id="genderChart" width="400" height="100"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h4>Country</h4>
+        </div>
+        <canvas id="countryChart" width="400" height="100"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="page-header">
+            <h4>Device OS</h4>
+        </div>
+        <canvas id="deviceChart" width="400" height="100"></canvas>
+    </div>
+    <div class="col-xs-6">
+        <div class="page-header">
+            <h4>Screen</h4>
+        </div>
+        <canvas id="screenChart" width="400" height="100"></canvas>
+    </div>
+</div>
+<script>
+new Chart(document.getElementById("countryChart"), {
+    type: 'bar',
+    data: {
+        labels: ["US", "FR", "DE", "UK", "RU", "IT", "SP"],
+        datasets: [{
+            data: [19000, 12000, 5000, 3000, 2000, 1900, 300],
+            label: 'Unique Users',
+            backgroundColor: 'rgba(169, 68, 66, 0.7)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+new Chart(document.getElementById("ageChart"), {
+    type: 'bar',
+    data: {
+        labels: ["13-17", "18-24", "25-34", "35-44", "45-54", "55-64"],
+        datasets: [{
+            data: [12, 19, 3, 5, 2, 3],
+            label: 'Unique Users',
+            backgroundColor: 'rgba(60, 118, 61, 0.84)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+new Chart(document.getElementById("deviceChart"), {
+    type: 'bar',
+    data: {
+        labels: ["Window", "MacOS", "Linux", "OS", "Android", "Other"],
+        datasets: [{
+            data: [12, 19, 3, 5, 2, 3],
+            label: 'Unique Users',
+            backgroundColor: 'rgba(60, 118, 61, 0.84)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+new Chart(document.getElementById("screenChart"), {
+    type: 'bar',
+    data: {
+        labels: ["360x640", "1366x768", "320x568", "1920x1080", "1600x900", "1280x1024"],
+        datasets: [{
+            data: [120, 1212, 3323, 5322, 2122, 2123],
+            label: 'Unique Users',
+            backgroundColor: 'rgba(60, 118, 61, 0.84)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+new Chart(document.getElementById("genderChart"), {
+    type: 'pie',
+    data: {
+        labels: ["Female", "Male"],
+        datasets: [{
+            data: [45, 55],
+            label: 'Gender',
+            backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(51, 122, 183, 0.7)'],
+            borderWidth: 1
+        }]
+    },
+});
+new Chart(document.getElementById("AppLaunchesChart"), {
+    type: 'line',
+    data: {
+        labels: ['01/02', '05/02', '10/02', '15/02', '20/02',' 25/02', '30/02'],
+        datasets: [{
+            label: 'Unique Users',
+            data: [4090, 1800, 5500, 3500, 5000, 9000, 8200],
+            backgroundColor: [ 'rgba(51, 122, 183, 0.7)'],
+            borderWidth: 1
+        },
+        {
+            label: 'New Users',
+            data: [1090, 1000, 1500, 1500, 2500, 1900, 1820],
+            backgroundColor: [ 'rgba(51, 122, 183, 0.7)'],
+            borderWidth: 1
+        }]
+    },
+    
+});
+new Chart(document.getElementById("activeChart"), {
+    type: 'line',
+    data: {
+        labels: ['01/02', '05/02', '10/02', '15/02', '20/02',' 25/02', '30/02'],
+        datasets: [{
+            label: 'Monthly Users',
+            data: [4090, 1800, 5300, 3500, 5000, 9000, 8200],
+            borderColor: 'rgb(55, 125, 229)',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderWidth: 2
+        },
+        {
+            label: 'Weekly Users',
+            data: [5090, 1000, 1500, 1800, 2500, 1900, 1420],
+            borderColor: 'rgb(71, 186, 166)',
+            backgroundColor: ['rgba(0, 0, 0, 0)'],
+            borderWidth: 2
+        },
+        {
+            label: 'Daily Users',
+            data: [1090, 1000, 1500, 1500, 2500, 1800, 1720],
+            borderColor: 'rgb(120, 101, 190)',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                stacked: true
+            }]
+        }
+    }
+    
+});
+</script>

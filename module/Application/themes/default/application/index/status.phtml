@@ -1,0 +1,136 @@
+<?php $this->headTitle('Перевірити статус ремонту') ?>
+<?php if (!isset($orderRow)): ?>
+    <div class='content'>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <div class="block-with-header form-wrap">
+                    <div class="block-header text-center">
+                        <i class="icon icon-settings-big"></i> Перевірити стан ремонту
+                    </div>
+                    <div class="block-body">
+                        <div class="maintext text-center">
+                            У даному меню ви зможете перевірити на якому етапі ремонту знаходиться ваш пристрій, стан та термін виконання.
+                            <br> Вхід у систему здійснюється через номер телефону і номер замовлення, який знаходиться у талоні отриманому у сервісному центрі.
+                        </div>
+                        <?php if ($error): ?>
+                            <div class="alert alert-danger">
+                                Заказ не знайдений
+                            </div>
+                        <?php endif ?>
+                        <form action="" method="post">
+                            <div class='row'>
+                                <div class='col-sm-6 col-sm-offset-3'>
+                                    <div class="form-group">
+                                        <?php echo $this->formElement($form->get('order_id')->setAttribute('class', 'form-control')->setAttribute('placeholder', 'Введіть номер замовлення')) ?>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">+380</div>
+                                            <?php echo $this->formElement($form->get('phone')->setAttribute('class', 'form-control')->setAttribute('placeholder', 'Введіть номер телефону')) ?>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <input type="submit" value="Перевірити" class="transition green-button">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php else: ?>
+    <div class='content'>
+        <div class="block-with-header form-wrap">
+            <div class="block-header text-center">
+                <i class="icon icon-settings-big"></i> Замовлення № <?php echo $orderRow->id ?>
+            </div>
+            <div class="block-body">
+                <div class='row'>
+                    <div class="col-sm-6">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>ПІБ:</th>
+                                <td><?php echo $this->escapeHtml($orderRow->customer_name) ?></td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td><?php echo $this->escapeHtml($orderRow->customer_email) ?></td>
+                            </tr>
+                            <tr>
+                                <th>Номер телефону:</th>
+                                <td>+380 <?php echo $this->escapeHtml($orderRow->customer_phone) ?></td>
+                            </tr>
+                            <tr>
+                                <th>Skype:</th>
+                                <td><?php echo $this->escapeHtml($orderRow->customer_skype) ?></td>
+                            </tr>
+                            <tr>
+                                <th>Дата створення:</th>
+                                <td><?php echo date('H:i d/m/Y', $orderRow->time_add) ?></td>
+                            </tr>
+                            <tr>
+                                <th>Дата обновлення:</th>
+                                <td>
+                                    <?php if ($orderRow->time_update): ?>
+                                        <?php echo date('H:i d/m/Y', $orderRow->time_update) ?>
+                                    <?php else: ?>
+                                        - - 
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Дата виконання:</th>
+                                <td>
+                                    <?php if ($orderRow->time_end): ?>
+                                        <?php echo date('H:i d/m/Y', $orderRow->time_end) ?>
+                                    <?php else: ?>
+                                        - - 
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Статус:</th>
+                                <td>
+                                    <h3 style="margin: 0;padding:0;">
+                                    <?php if ($orderRow->getStatusRow()->is_default == 'yes'): ?>
+                                        <span class="text-primary"><?php echo $orderRow->getStatusRow()->name?></span>
+                                    <?php elseif ($orderRow->getStatusRow()->is_close == 'yes'): ?>
+                                        <span class="text-danger"><?php echo $orderRow->getStatusRow()->name?></span>
+                                    <?php else: ?>
+                                        <span class="text-success"><?php echo $orderRow->getStatusRow()->name?></span>
+                                    <?php endif ?>
+                                    </h3>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Тип товару, марка, модель:</label>
+                        <pre><?php if($orderRow->getCategoryRow()):?><?php echo $orderRow->getCategoryRow()->title?><?php endif?><?php echo ($orderRow->product_title)?', '.nl2br($this->escapeHtml($orderRow->product_title)):''?></pre>
+
+                        <label>Серійний номер:</label>
+                        <pre><?php echo nl2br($this->escapeHtml($orderRow->product_serialnumber)) ?></pre>
+                        
+                        <label>Опис проблеми:</label>
+                        <pre><?php echo nl2br($this->escapeHtml($orderRow->problem)) ?></pre>
+                        
+                        <label>Зовнішній вигляд:</label>
+                        <pre><?php echo nl2br($this->escapeHtml($orderRow->product_view)) ?></pre>
+
+                        <label>Комплектація:</label>
+                        <pre><?php echo nl2br($this->escapeHtml($orderRow->product_options)) ?></pre>
+                        
+                        <label>Виконана робота:</label>
+                        <pre><?php echo nl2br($this->escapeHtml($orderRow->work_result)) ?></pre>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h2>Загальна вартість: <span id="costSum"><?php echo nl2br($this->escapeHtml($orderRow->price)) ?></span> грн.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

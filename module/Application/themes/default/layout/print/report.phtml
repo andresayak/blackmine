@@ -1,0 +1,46 @@
+<?php echo $this->doctype(); ?>
+<?php $children = $this->viewModel()->getCurrent()->getChildren();
+$child = $children[0]; ?>
+<html dir='ltr' lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Report')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <base href="<?php echo $this->basePath('/') ?>"/>
+        <link rel="stylesheet" href="<?php echo $this->themePath('/css/bootstrap.min.css')?>">
+        <link rel="stylesheet" href="<?php echo $this->themePath('/css/admin.css')?>">
+        <link rel="stylesheet" href="<?php echo $this->themePath('/css/print.css')?>">
+        <link href="<?php echo $this->themePath('/favicon.png')?>" rel="shortcut icon" type="image/png"/>
+        <script src="<?php echo $this->themePath('/js/Chart.bundle.min.js')?>"></script>
+        <style>
+            @media print {
+                a:after {content:" <" attr(href) ">";
+                h3 { page-break-before: always; }
+                * { -webkit-print-color-adjust: exact; }
+            }
+        </style>
+        <script>//window.print();</script>
+    </head>
+    <body data-time="<?php echo time() ?>">
+        <header class="general">
+            <div class="container">
+                <table class="" style="width:100%">
+                    <tr>
+                        <td>
+                            <div class="logo" style="padding: 20px"><img width="200" src="<?php echo $this->themePath('/img/logo-50.png')?>" alt=""></div>
+                        </td>
+                        <td>
+                            <div class="text-right" style="padding: 20px;font-size: 16px;">
+                                <p><b><?php echo $this->cms('config', 'view_manager.sitename')?></b><br/>
+                                email: <?php echo $this->cms('config', 'view_manager.public_email')?><br/>
+                                <?php echo $this->cms('config', 'view_manager.base_path')?></p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </header>
+        <div class="container">
+            <?php echo $this->content ?>
+        </div>
+    </body>
+</html>

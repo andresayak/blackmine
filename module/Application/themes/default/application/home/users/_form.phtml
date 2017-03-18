@@ -1,0 +1,122 @@
+<script>
+$(function () {
+    $('#generatePassword').pGenerator({
+        'bind': 'click',
+        'passwordElement': '[name="password"]',
+        'displayElement': '[name="password"]',
+        'passwordLength': 16,
+        'uppercase': true,
+        'lowercase': true,
+        'numbers':   true,
+        'specialChars': false
+    });
+    $('#element-password_change').click(function(){
+        $('#password-controls').toggle();
+    });
+});
+$( function() {
+    var select = $("[name='commission']");
+    var defaultValue = select.val();
+    defaultValue = (defaultValue)?defaultValue:0;
+    var commissionValue = function(value){
+        $('#commissionValue').text(value+'%');
+    };
+    commissionValue(defaultValue);
+    var slider = $("#slider").slider({
+        min: 1,
+        max: 100,
+        range: "min",
+        value: defaultValue,
+        slide: function (event, ui) {
+            select.val(ui.value);
+            commissionValue(ui.value);
+        }
+    });
+    $(select).on("change", function () {
+        var value = this.val();
+        commissionValue(value);
+        slider.slider("value", value);
+    });
+});
+</script>
+<div class="row">
+    <div class="col-sm-6">
+        <?php $form->setAttribute('class', 'form')->prepare() ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <div class="form-group<?php if (count($form->get('name')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="name">ПІБ <font color="red">*</font></label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('name')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('name'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('email')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="email">Email <font color="red">*</font></label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('email')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('email'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('phone')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="phone">Номер телефону</label>
+            <div class="controls">
+                <div class="input-group">
+                    <div class="input-group-addon">+380</div>
+                    <?php echo $this->formElement($form->get('phone')->setAttribute('class', 'form-control')) ?>
+                </div>
+                <?php echo $this->formElementErrors($form->get('phone'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="controls">
+                <button class="btn btn-lg btn-primary">Зберегти</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group<?php if (count($form->get('commission')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="commission">Комісія (<span id="commissionValue"></span>)</label>
+            <div class="controls">
+                <div id="slider"></div>
+                <?php echo $this->formElement($form->get('commission')) ?>
+                <?php echo $this->formElementErrors($form->get('commission'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('skype')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="skype">Skype</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('skype')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('skype'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <div class="form-group<?php if (count($form->get('role')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="role">Роль</label>
+            <div class="controls">
+                <?php echo $this->formElement($form->get('role')->setAttribute('class', 'form-control')) ?>
+                <?php echo $this->formElementErrors($form->get('role'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+        <?php if($userRow->id):?>
+        <div class="form-group checkbox<?php if (count($form->get('ban_status')->getMessages())): ?> has-error<?php endif ?>">
+            <label class="control-label" for="ban_status">
+                <?php echo $this->formElement($form->get('ban_status')) ?>
+                Блокувати користувача</label>
+            <?php echo $this->formElementErrors($form->get('ban_status'), array('class' => 'text-danger')); ?>
+        </div>
+        <?php endif?>
+        <div class="form-group<?php if (count($form->get('password')->getMessages())): ?> has-error<?php endif ?>">
+            <?php if($userRow->id):?><label class="pull-right" for="element-password_change"><?php echo $this->formElement($form->get('password_change')->setAttribute('id','element-password_change')) ?> Встановити пароль</label><?php endif?>
+            <div id="password-controls" class="controls" <?php if($userRow->id):?>style="display: none"<?php endif?>>
+               <label class="control-label" for="password">Пароль</label>
+               <div class="input-group">
+                    <?php echo $this->formElement($form->get('password')->setAttribute('class', 'form-control')) ?>
+                    <span class="input-group-btn">
+                        <button id="generatePassword" class="btn btn-default" type="button">Генерувати</button>
+                    </span>
+                </div>
+                <?php echo $this->formElementErrors($form->get('password'), array('class' => 'text-danger')); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag()?>

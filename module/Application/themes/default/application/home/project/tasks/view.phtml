@@ -1,0 +1,30 @@
+<?php $this->headTitle($title = $taskRow->title) ?>
+<?php $this->headTitle('Tasks') ?>
+<?php $this->headTitle($projectRow->title) ?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li><a href="<?php echo $this->url('projects')?>">Projects</a></li>
+        <li><a href="<?php echo $this->url('project-view', array('project_id'=>$projectRow->id))?>"><?php echo $projectRow->title?></a></li>
+        <li><a href="<?php echo $this->url('project-view', array('project_id'=>$projectRow->id, 'controller'=>'tasks'))?>">Tasks</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="pull-right">
+                <?php if($this->acl('application-home/project/tasks-update')):?>
+                <a class="btn btn-sm btn-success" href="<?php echo $this->url('project-view', array('project_id'=>$projectRow->id,'controller'=>'tasks', 'action'=>'update'))?>"><i class="fa fa-plus"></i> Update task</a>
+                <?php endif?>
+                <?php if($this->acl('application-home/project/tasks-remove')):?>
+                <a class="btn btn-sm btn-danger" href="<?php echo $this->url('project-view', array('project_id'=>$projectRow->id,'controller'=>'tasks', 'action'=>'remove'))?>"><i class="fa fa-trash"></i> Remove</a>
+                <?php endif?>
+            </div>
+            <h3><?php echo $this->escapeHtml($title)?></h3>
+        </div>
+    </div>
+</div>

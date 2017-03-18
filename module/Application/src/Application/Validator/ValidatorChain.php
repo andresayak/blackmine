@@ -8,7 +8,8 @@ class ValidatorChain extends \Zend\Validator\ValidatorChain
 {
     protected $_results, $_sm, $_filter;
     protected $invokableClasses = array(
-        'passwordHash'          =>  'Ap\Validator\PasswordHash',
+        'passwordHash'          =>  'Application\Validator\PasswordHash',
+        'passwordAgain' =>  'Application\Validator\PasswordAgain'
     );
     
     public function __construct() 

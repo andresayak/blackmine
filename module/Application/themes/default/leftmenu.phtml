@@ -1,0 +1,100 @@
+<?php 
+$ulClass = $this->navigation()->menu()->getUlClass();
+$indent = '';
+$minDepth = $this->navigation()->menu()->getMinDepth();
+$maxDepth = $this->navigation()->menu()->getMaxDepth();
+$onlyActive = '';
+$escapeLabels = '';
+$liActiveClass = 'active';
+$html = '';
+$found = $this->navigation()->findActive($container, $minDepth, $maxDepth);
+$escaper = $this->plugin('escapeHtmlAttr');
+if ($found) {
+    $foundPage  = $found['page'];
+    $foundDepth = $found['depth'];
+} else {
+    $foundPage = null;
+}
+$iterator = new RecursiveIteratorIterator(
+    $container,
+    RecursiveIteratorIterator::SELF_FIRST
+);
+if (is_int($maxDepth)) {
+    $iterator->setMaxDepth($maxDepth);
+}
+
+$prevDepth = -1;
+foreach ($iterator as $page) {
+    $params = $page->getCustomProperties();
+    $depth = $iterator->getDepth();
+    $isActive = $page->isActive(true);
+    if ($depth < $minDepth || !$this->navigation()->accept($page)) {
+        continue;
+    } elseif ($onlyActive && !$isActive) {
+        $accept = false;
+        if ($foundPage) {
+            if ($foundPage->hasPage($page)) {
+                $accept = true;
+            } elseif ($foundPage->getParent()->hasPage($page)) {
+                if (!$foundPage->hasPages(!$this->navigation()->renderInvisible) ||
+                    is_int($maxDepth) && $foundDepth + 1 > $maxDepth) 
+                {
+                    $accept = true;
+                }
+            }
+        }
+
+        if (!$accept) {
+            continue;
+        }
+    }
+    
+    $depth -= $minDepth;
+    $myIndent = $indent . str_repeat('        ', $depth);
+
+    if ($depth > $prevDepth) {
+            $ulClass = ' class="' . $escaper($ulClass) . '"';
+        $html .= $myIndent . '<ul' . $ulClass . '>' . PHP_EOL;
+    } elseif ($prevDepth > $depth) {
+    for ($i = $prevDepth; $i > $depth; $i--) {
+        $ind = $indent . str_repeat('        ', $i);
+        $html .= $ind . '    </li>' . PHP_EOL;
+        $html .= $ind . '</ul>' . PHP_EOL;
+    }
+        $html .= $myIndent . '    </li>' . PHP_EOL;
+    } else {
+        $html .= $myIndent . '    </li>' . PHP_EOL;
+    }
+    $liClasses = array();
+    if ($isActive) {
+        $liClasses[] = $liActiveClass;
+    }
+    if ($page->getClass()) {
+        $liClasses[] = $page->getClass();
+    }
+    if($page->hasPages(true)){
+        $liClasses[] = 'dropdown';
+    }
+    $liClass = empty($liClasses) ? '' : ' class="' . $escaper(implode(' ', $liClasses)) . '"';
+
+    $html .= $myIndent . '    <li' . $liClass . '>' . PHP_EOL
+        . $myIndent . '        ';
+    $label = $this->translate($page->getLabel(), $page->getTextDomain());
+    $icon = (isset($params['icon']))?'<i class="'.$params['icon'].'" aria-hidden="true"></i>':false;
+    if($page->hasPages(true)){
+        $html.= '<a href="'.$page->getHref().'" class="dropdown-toggle">'.($icon?' '.$icon.' ':'').$label.' <span class="caret"></span></a>';
+    }else{
+        $html.= '<a href="'.$page->getHref().'">'.($icon?' '.$icon.' ':'').$label.'</a>';
+    }
+    $prevDepth = $depth;
+}
+if ($html) {
+    for ($i = $prevDepth+1; $i > 0; $i--) {
+        $myIndent = $indent . str_repeat('        ', $i-1);
+        $html .= $myIndent . '    </li>' . PHP_EOL
+            . $myIndent . '</ul>' . PHP_EOL;
+    }
+    $html = rtrim($html, PHP_EOL);
+}
+echo $html;
+?>

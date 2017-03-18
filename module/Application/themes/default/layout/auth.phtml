@@ -1,0 +1,14 @@
+<?php echo $this->doctype()."\n"; ?>
+<html dir='ltr' lang='en'>
+    <?php echo $this->render('head.phtml'); ?>
+    <body class="layer layer-auth">
+        <div class="wrapper">
+            <div class="header">
+                <a href="/" class="logo">
+                    <img src="<?php echo $this->themePath('/img/logo.png')?>">
+                </a>
+            </div>
+            <?php echo $this->content ?>
+        </div>
+    </body>
+</html>

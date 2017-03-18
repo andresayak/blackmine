@@ -1,0 +1,37 @@
+<?php $this->headTitle('FAQ')?>
+<div class="container">
+    <div class="page-header">
+        <h2>FAQ about Black_Mine </h2>
+    </div>
+    <?php $items = array(
+    'How do I change my password',
+    'How do I cancel my account',
+    'How can I invite more coworkers to my account?',
+    'Can I invite more members',
+    'How do I change my plan',
+    'Why wans\'t my credit card charged?',
+    'Where do I get a coupon code',
+    'Where do I update my credit card',
+    'How many projects can I have',
+    'Are there technical requirements for this',
+    'Where do I update a project info');?>
+
+    <div id="accordion" class="panel-group" role="tablist" >
+        <?php foreach($items AS $index=>$item):?>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="accord<?php echo $index?>">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $index?>" aria-expanded="true" aria-controls="collapse<?php echo $index?>">
+                        <i class="fa fa-question-circle"></i> <?php echo $item?>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse<?php echo $index?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="accord<?php echo $index?>">
+                <div class="panel-body">
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+        <?php endforeach?>
+    </div>
+</div>

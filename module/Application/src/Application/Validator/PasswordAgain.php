@@ -3,17 +3,16 @@
 namespace Application\Validator;
 use Application\Validator\AbstractValidator;
 
-class PasswordHash extends AbstractValidator
+class PasswordAgain extends AbstractValidator
 {
+    const INVALID_VALUE = 'invalid';
     protected $messageTemplates = array(
-        self::INVALID_VALUE    => "The input is not valid",
+        self::INVALID_VALUE    => "Password not same",
     );
 
     public function isValid($value, $context = null)
     {
-        $this->setValue($value);
-        $hash = $this->getFilter()->getSm()->get('Auth\Service')->passwordHash($value);
-        if($this->getFilter()->getUserRow()->password == $hash){
+        if(isset($context['password']) && $value == $context['password']){
             return true;
         }
         $this->error(self::INVALID_VALUE);

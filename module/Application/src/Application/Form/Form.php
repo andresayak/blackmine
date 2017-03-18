@@ -12,9 +12,6 @@ class Form extends \Zend\Form\Form
         $query = preg_replace(array(
             '/[^\d]/'
         ), '', $query);
-        $query = preg_replace(array(
-            '/^\+380/', '/^380/', '/^0/', '/[^\d]/'
-        ), '', $query);
         return $query;
     }
 

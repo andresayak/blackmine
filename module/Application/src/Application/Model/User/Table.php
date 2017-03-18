@@ -8,10 +8,8 @@ class Table extends Prototype
 {
     protected $_name = 'users';
     
-    protected $_cols = array(
-        'id', 'email',  'password', 'role', 'ban_status', 'name', 'commission', 'phone', 'skype'
-    );
     protected $_defaults = array(
+        'role'  =>  'member',
         'ban_status'    =>  'off',
         'commission'    =>  20
     );

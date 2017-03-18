@@ -1,0 +1,35 @@
+<?php $this->headTitle($title = 'Projects')?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <?php if($this->acl('application-home/project-add')):?>
+            <a class="btn btn-sm btn-success pull-right" href="<?php echo $this->url('projects', array('action'=>'add'))?>"><i class="fa fa-plus"></i> Add project</a>
+            <?php endif?>
+            <h4><?php echo $title?> (<?php echo $this->paginator->getTotalItemCount()?>)</h4>
+            <a href="">View all issues</a> | <a href="">Overall spent time</a> | <a href="">Overall activity</a>
+        </div>
+        <div class="list-group">
+            <?php foreach($paginator AS $item):?>
+            <div class="list-group-item">
+                <h4>
+                    <a href="<?php echo $this->url('project-view', array('project_id'=>$item->id))?>">
+                        <?php echo $this->escapeHtml($item->title)?>
+                    </a>
+                </h4>
+            </div>
+            <?php endforeach;?>
+        </div>
+        <?php echo $this->paginationControl($this->paginator,
+            'Sliding',
+            'paginator.phtml', array('params'=>array(), 'route'=>'projects')); ?>
+    </div>
+</div>

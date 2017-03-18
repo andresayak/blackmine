@@ -1,0 +1,168 @@
+<?php $this->headTitle($title = 'Замовлення № ' . $orderRow->id) ?>
+<div class="container" style="font-size: 20px;">
+    <div class="page-header text-center" style="border:0;">
+        <h2><?php echo $this->escapeHtml($title) ?></h2>
+        <p><i>Дата прийому замовлення: <span data-time="<?php echo $orderRow->time_add?>" data-format="d.m.Y / H:i"><?php echo date('d.m.Y / H:i', $orderRow->time_add) ?></span></i></p>
+    </div>
+    <table class='table'>
+        <col width='50%'/>
+        <col width='50%'/>
+        <tr>
+            <td>
+                <label>Клієнт: </label>
+            </td>
+            <td>
+                <span><?php echo $this->escapeHtml($orderRow->customer_name) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Номер телефону: </label>
+            </td>
+            <td>
+                <span>+380 <?php echo $this->escapeHtml($orderRow->customer_phone) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Тип пристрою, марка, модель: </label>
+            </td>
+            <td>
+                <span>
+                    <?php if ($orderRow->getCategoryRow()): ?>
+                        <?php echo $orderRow->getCategoryRow()->title ?>
+                    <?php endif ?>
+                </span>
+                <span><?php echo $this->escapeHtml($orderRow->product_title) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Серійний номер: </label>
+            </td>
+            <td>
+                <span><?php echo $this->escapeHtml($orderRow->product_serialnumber) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Опис проблеми: </label>
+            </td>
+            <td>
+                <span><?php echo nl2br($this->escapeHtml($orderRow->problem)) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Зовнішній вигляд: </label>
+            </td>
+            <td>
+                <span><?php echo nl2br($this->escapeHtml($orderRow->product_view)) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Комплектація: </label>
+            </td>
+            <td>
+                <span><?php echo nl2br($this->escapeHtml($orderRow->product_options)) ?></span>
+            </td>
+        </tr>
+    </table>
+    <table class="" style="width:100%; margin-top:20px; font-size: 20px;">
+        <tr>
+            <td style="text-align: left;">
+                Підпис менеджера: ______________
+                <div style="text-align: center;"><small><?php echo $this->auth()->getUserRow()->name ?></small></div>
+            </td>
+            <td style="text-align: left;">
+                Підпис клієнта: _______________
+                <div style="text-align: center;"><small><?php echo $orderRow->customer_name ?></small></div>
+            </td>
+        </tr>
+    </table>
+</div>
+<hr style="border-top: 2px dashed #000;"/>
+<div class="container" style="font-size: 20px;">
+    <div class="page-header text-center" style="border:0;">
+        <h2><?php echo $this->escapeHtml($title) ?></h2>
+        <p><i>Дата прийому замовлення: <span data-time="<?php echo $orderRow->time_add?>" data-format="d.m.Y / H:i"><?php echo date('d.m.Y / H:i', $orderRow->time_add) ?></span></i></p>
+    </div>
+    <table class='table'>
+        <col width='50%'/>
+        <col width='50%'/>
+        <tr>
+            <td>
+                <label>Клієнт: </label>
+            </td>
+            <td>
+                <span><?php echo $this->escapeHtml($orderRow->customer_name) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Номер телефону: </label>
+            </td>
+            <td>
+                <span>+380 <?php echo $this->escapeHtml($orderRow->customer_phone) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Тип пристрою, марка, модель: </label>
+            </td>
+            <td>
+                <span>
+                    <?php if ($orderRow->getCategoryRow()): ?>
+                        <?php echo $orderRow->getCategoryRow()->title ?>
+                    <?php endif ?>
+                </span>
+                <span><?php echo $this->escapeHtml($orderRow->product_title) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Серійний номер: </label>
+            </td>
+            <td>
+                <span><?php echo $this->escapeHtml($orderRow->product_serialnumber) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Опис проблеми: </label>
+            </td>
+            <td>
+                <span><?php echo nl2br($this->escapeHtml($orderRow->problem)) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Зовнішній вигляд: </label>
+            </td>
+            <td>
+                <span><?php echo nl2br($this->escapeHtml($orderRow->product_view)) ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Комплектація: </label>
+            </td>
+            <td>
+                <span><?php echo nl2br($this->escapeHtml($orderRow->product_options)) ?></span>
+            </td>
+        </tr>
+    </table>
+    <table class="" style="width:100%; margin-top:20px; font-size: 20px;">
+        <tr>
+            <td style="text-align: left;">
+                Підпис менеджера: ______________
+                <div style="text-align: center;"><small><?php echo $this->auth()->getUserRow()->name ?></small></div>
+            </td>
+            <td style="text-align: left;">
+                Підпис клієнта: _______________
+                <div style="text-align: center;"><small><?php echo $orderRow->customer_name ?></small></div>
+            </td>
+        </tr>
+    </table>
+</div>

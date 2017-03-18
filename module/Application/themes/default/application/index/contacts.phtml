@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="page-header">
+        <h2 class="text-center">Questions, advice or just want to say hi?</h2>
+    </div>
+    <div class="contact-intro">
+        <p>For all inquiries including new business, employment opportunities or to hear more about our services, please get in touch. We'd love to help you with your new awesome project.</p>
+    </div>
+    <div class="contact-form">
+        <form method="post" action="">
+            <?php echo $this->flashMessages() ?>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Name" name="name" value="<?php echo $form->get('name')->getValue() ?>">
+                <?php echo $this->formElementErrors($form->get('name'), array('class' => 'text-danger')); ?>
+            </div>
+            <div class="form-group">
+                <input type="email" required placeholder="Email" class="form-control" name="email" value="<?php echo $form->get('email')->getValue() ?>">
+                <?php echo $this->formElementErrors($form->get('email'), array('class' => 'text-danger')); ?>
+            </div>
+            <div class="form-group">
+                <textarea name="message" id="" cols="30" rows="10" class="form-control" placeholder="Message"  maxlength="500"><?php echo $form->get('message')->getValue() ?></textarea>
+                <?php echo $this->formElementErrors($form->get('message'), array('class' => 'text-danger')); ?>
+            </div>
+            <?php if ($captchaStatus): ?>
+                <div class="center-block">
+                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                    <div class="g-recaptcha" data-sitekey="<?php echo $captchaKey ?>"></div>
+                </div>
+            <?php endif ?>
+            <div class="text-center">
+                <input type="submit" value="Send message" class="btn btn-lg btn-primary">
+            </div>
+        </form>
+    </div>
+</div>

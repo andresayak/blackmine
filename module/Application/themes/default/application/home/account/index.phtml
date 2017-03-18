@@ -1,0 +1,21 @@
+<?php $this->headTitle($title = 'My account')?>
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/"><i class="fa fa-home" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="/home">Dashboard</a></li>
+        <li>
+            <?php echo $title?>
+        </li>
+    </ul>
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class='pull-right'>
+                <a href='<?php echo $this->url('account', array('action'=>'password'))?>' class='btn btn-sm btn-default'>
+                    <i class='fa fa-key'></i> Edit password</a>
+            </div>
+            <h4><?php echo $title?></h4>
+        </div>
+    </div>
+</div>
